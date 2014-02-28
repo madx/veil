@@ -116,4 +116,10 @@ bootstrap:
 	@
 	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
 
-.PHONY: all clean setup npm-deps bootstrap announce-rebuild
+# Upgrade this makefile
+upgrade:
+	@ $(ECHO) "$(COL_Y)▸ Fetching latest Makefile$(ENDC)"
+	@ curl -s https://raw.github.com/madx/veil/master/Makefile > Makefile
+	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
+
+.PHONY: all clean setup npm-deps bootstrap announce-rebuild upgrade
