@@ -99,10 +99,16 @@ bootstrap:
 	@ $(ECHO) "$(COL_Y)▸ Installing normalize$(ENDC)"
 	@ curl -s https://raw.github.com/skw/normalize.stylus/master/normalize.styl > sources/stylesheets/normalize_.styl
 	@ sed -i "9s/^/\/\//" sources/stylesheets/normalize_.styl
+	@ $(ECHO) "  sources/stylesheets/normalize_.styl"
 	@
-	@ $(ECHO) "$(COL_Y)▸ Bootstraping files$(ENDC)"
+	@ $(ECHO) "$(COL_Y)▸ Bootstraping with default files$(ENDC)"
 	@ curl -s https://raw.github.com/madx/veil/master/skel/default.jade > sources/layouts/default.jade
+	@ $(ECHO) "  sources/layout/default.jade"
 	@ curl -s https://raw.github.com/madx/veil/master/skel/index.jade > sources/pages/index.jade
+	@ $(ECHO) "  sources/pages/index.jade"
 	@ curl -s https://raw.github.com/madx/veil/master/skel/stylesheet.styl > sources/stylesheets/stylesheet.styl
+	@ $(ECHO) "  sources/stylesheets/stylesheet.styl"
+	@
+	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
 
 .PHONY: all clean setup npm-deps bootstrap
