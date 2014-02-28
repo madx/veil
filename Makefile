@@ -12,11 +12,11 @@ UNAME = $(shell uname -s)
 # OS specific variables
 ifeq ($(UNAME),Linux)
 ECHO = echo -e
-WATCH = inotifywait -qrm sources/ -e CLOSE_WRITE | while read; do make -s; done
+WATCH = inotifywait -qrm sources/ static/ -e CLOSE_WRITE | while read; do make -s; done
 endif
 ifeq ($(UNAME),Darwin)
 ECHO = echo
-WATCH = fswatch sources/ "make -s"
+WATCH = fswatch sources/:static/ "make -s"
 endif
 
 # Source files
