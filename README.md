@@ -3,8 +3,8 @@ veil
 
 veil is a very simple boilerplate for writing static sites.
 
-It uses [Jade](jade) for templating, [Stylus](stylus) for CSS generation and
-[GNU Make](make) for the build system.
+It uses [Jade][jade] for templating, [Stylus][stylus] for CSS generation and
+[GNU Make][make] for the build system.
 
 Install
 -------
@@ -41,8 +41,8 @@ $ make
 
 ### watch
 
-Provided you have installed either [inotify-tools](inotifytools) (Linux) or
-[fswatch](fswatch) (OS X), you can use the `watch` task to continuously rebuild
+Provided you have installed either [inotify-tools][inotifytools] (Linux) or
+[fswatch][fswatch] (OS X), you can use the `watch` task to continuously rebuild
 the site as you modify the source files.
 
 ``` console
