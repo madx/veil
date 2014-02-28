@@ -1,13 +1,23 @@
 # Veil - Copyright © 2014 François Vaux
 
-# OS version
-UNAME = $(shell uname -s)
-
 # Colors
 COL_R = "\\033[31m"
 COL_G = "\\033[32m"
 COL_Y = "\\033[33m"
 ENDC  = "\\033[0m"
+
+# OS version
+UNAME = $(shell uname -s)
+
+# OS specific variables
+ifeq ($(UNAME),Linux)
+ECHO = echo -e
+WATCH = inotifywait -qrm sources/ -e CLOSE_WRITE | while read; do make -s; done
+endif
+ifeq ($(UNAME),Darwin)
+ECHO = echo
+WATCH = fswatch sources/ "make -s"
+endif
 
 # Source files
 PAGES       = $(shell find sources/pages -name *.jade 2>/dev/null)
@@ -29,20 +39,15 @@ CSSDIR    = $(ASSETSDIR)/css
 
 # Default task: build everything
 all: html css static
-	@ echo -e "$(COL_G)✓ Done$(ENDC)"
+	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
 
 watch:
-	@ echo -e "$(COL_Y)▸ Watching for changes$(ENDC)"
-ifeq ($(UNAME),Linux)
-	@inotifywait -qrm sources/ -e CLOSE_WRITE | while read; do make -s; done
-endif
-ifeq ($(UNAME),Darwin)
-	@fswatch sources/ "make -s"
-endif
+	@ $(ECHO) "$(COL_Y)▸ Watching for changes$(ENDC)"
+	@ $(WATCH)
 
 # Cleanup: remove all output files
 clean:
-	@ echo -e "$(COL_Y)♻ Cleaning$(ENDC)"
+	@ $(ECHO) "$(COL_Y)♻ Cleaning$(ENDC)"
 	@ rm -rf $(OUTDIR)
 
 # Meta-tasks for html, css and static
@@ -62,18 +67,18 @@ $(CSSDIR):
 
 # Rule for HTML files
 $(OUTDIR)/%.html: sources/pages/%.jade | $(OUTDIR)
-	@ echo -e "$(COL_Y)▸ Building $(@:$(OUTDIR)/%=%)$(ENDC)"
+	@ $(ECHO) "$(COL_Y)▸ Building $(@:$(OUTDIR)/%=%)$(ENDC)"
 	@ mkdir -p $(shell dirname $@)
 	@ jade -P -o $(shell dirname $@) >/dev/null $<
 
 # Rule for stylesheets
 $(CSSDIR)/%.css: sources/stylesheets/%.styl | $(CSSDIR)
-	@ echo -e "$(COL_Y)▸ Building $(@:$(OUTDIR)/%=%)$(ENDC)"
+	@ $(ECHO) "$(COL_Y)▸ Building $(@:$(OUTDIR)/%=%)$(ENDC)"
 	@ stylus -u autoprefixer-stylus -o $(CSSDIR) >/dev/null $<
 
 # Rules for static assets
 $(ASSETSDIR)/%: static/% | $(ASSETSDIR)
-	@ echo -e "$(COL_Y)▸ Asset: $(@:$(OUTDIR)/%=%)$(ENDC)"
+	@ $(ECHO) "$(COL_Y)▸ Asset: $(@:$(OUTDIR)/%=%)$(ENDC)"
 	@ mkdir -p $(shell dirname $@)
 	@ cp $< $(shell dirname $@)
 
@@ -82,20 +87,20 @@ setup: npm-deps bootstrap
 
 # Install npm dependencies
 npm-deps:
-	@ echo -e "$(COL_Y)▸ Installing dependencies$(ENDC)"
+	@ $(ECHO) "$(COL_Y)▸ Installing dependencies$(ENDC)"
 	@ sudo npm install -g jade stylus autoprefixer-stylus
 
 # Bootstrap files
 bootstrap:
 	@ test -d sources && { echo -e "\n$(COL_R)✗ Already set up$(ENDC)\n"; exit 1; } || true
-	@ echo -e "$(COL_Y)▸ Creating directory structure$(ENDC)"
+	@ $(ECHO) "$(COL_Y)▸ Creating directory structure$(ENDC)"
 	@ mkdir -p sources/{layouts,pages,stylesheets} static
 	@
-	@ echo -e "$(COL_Y)▸ Installing normalize$(ENDC)"
+	@ $(ECHO) "$(COL_Y)▸ Installing normalize$(ENDC)"
 	@ wget https://raw.github.com/skw/normalize.stylus/master/normalize.styl -O sources/stylesheets/normalize_.styl
 	@ sed -i "9s/^/\/\//" sources/stylesheets/normalize_.styl
 	@
-	@ echo -e "$(COL_Y)▸ Bootstraping files$(ENDC)"
+	@ $(ECHO) "$(COL_Y)▸ Bootstraping files$(ENDC)"
 	@ wget https://raw.github.com/madx/veil/master/skel/default.jade -O sources/layouts/default.jade
 	@ wget https://raw.github.com/madx/veil/master/skel/index.jade -O sources/pages/index.jade
 	@ wget https://raw.github.com/madx/veil/master/skel/stylesheet.styl -O sources/stylesheets/stylesheet.styl
