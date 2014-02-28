@@ -15,7 +15,7 @@ Install
 $ mkdir my-website; cd my-website
 
 # Download the Makefile
-$ wget https://gist.githubusercontent.com/madx/9254642/raw/fc3820268c4043948cd15f8c5c1eb562e5765bbf/Makefile
+$ wget https://raw.github.com/madx/veil/master/Makefile
 
 # Launch the setup task
 $ make setup
