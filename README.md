@@ -3,9 +3,8 @@ veil
 
 veil is a very simple boilerplate for writing static sites.
 
-It uses [Jade](http://jade-lang.com/) for templating,
-[Stylus](http://learnboost.github.io/stylus/) for CSS generation and [GNU
-Make](https://www.gnu.org/software/make/) for the build system.
+It uses [Jade](jade) for templating, [Stylus](stylus) for CSS generation and
+[GNU Make](make) for the build system.
 
 Install
 -------
@@ -24,7 +23,11 @@ $ make setup
 Usage
 -----
 
-Run `make` to build the site.
+Building the site requires exactly one command:
+
+``` console
+$ make
+```
 
 - Pages are written with Jade and stored in `sources/pages/`. They will map to
   a file in your output dir (i.e. `sources/pages/index.jade` →
@@ -46,5 +49,8 @@ the site as you modify the source files.
 $ make watch
 ```
 
+[jade]: http://jade-lang.com/
+[stylus]: http://learnboost.github.io/stylus/
+[make]: https://www.gnu.org/software/make/
 [inotifytools]: https://github.com/rvoicilas/inotify-tools
 [fswatch]: https://github.com/alandipert/fswatch
