@@ -103,6 +103,7 @@ bootstrap:
 	@ $(ECHO) "$(COL_Y)▸ Installing normalize$(ENDC)"
 	@ curl -s https://raw.github.com/skw/normalize.stylus/master/normalize.styl > sources/stylesheets/normalize_.styl
 	@ sed -i "9s/^/\/\//" sources/stylesheets/normalize_.styl
+	@ sed -i "s/\(box-sizing\)(\([^)]\+\))/\1 \2/" sources/stylesheets/normalize_.styl
 	@ $(ECHO) "  sources/stylesheets/normalize_.styl"
 	@
 	@ $(ECHO) "$(COL_Y)▸ Bootstraping with default files$(ENDC)"
