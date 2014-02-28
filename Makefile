@@ -38,7 +38,7 @@ ASSETSDIR = $(OUTDIR)/assets
 CSSDIR    = $(ASSETSDIR)/css
 
 # Default task: build everything
-all: html css static
+all: announce-rebuild html css assets
 	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
 
 watch:
@@ -51,9 +51,9 @@ clean:
 	@ rm -rf $(OUTDIR)
 
 # Meta-tasks for html, css and static
-html: $(HTML)
-css:  $(CSS)
-static: $(STATIC)
+html:   $(HTML)
+css:    $(CSS)
+assets: $(STATIC)
 
 # Rules for building the output folders
 $(OUTDIR):
@@ -65,20 +65,24 @@ $(ASSETSDIR):
 $(CSSDIR):
 	@ mkdir -p $(CSSDIR)
 
+# Rule to announce a rebuild
+announce-rebuild:
+	@ $(ECHO) "$(COL_Y)▸ Rebuilding$(ENDC)"
+
 # Rule for HTML files
 $(OUTDIR)/%.html: sources/pages/%.jade | $(OUTDIR)
-	@ $(ECHO) "$(COL_Y)▸ Building $(@:$(OUTDIR)/%=%)$(ENDC)"
+	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
 	@ mkdir -p $(shell dirname $@)
 	@ jade -P -o $(shell dirname $@) >/dev/null $<
 
 # Rule for stylesheets
 $(CSSDIR)/%.css: sources/stylesheets/%.styl | $(CSSDIR)
-	@ $(ECHO) "$(COL_Y)▸ Building $(@:$(OUTDIR)/%=%)$(ENDC)"
+	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
 	@ stylus -u autoprefixer-stylus -o $(CSSDIR) >/dev/null $<
 
 # Rules for static assets
 $(ASSETSDIR)/%: static/% | $(ASSETSDIR)
-	@ $(ECHO) "$(COL_Y)▸ Asset: $(@:$(OUTDIR)/%=%)$(ENDC)"
+	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
 	@ mkdir -p $(shell dirname $@)
 	@ cp $< $(shell dirname $@)
 
@@ -111,4 +115,4 @@ bootstrap:
 	@
 	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
 
-.PHONY: all clean setup npm-deps bootstrap
+.PHONY: all clean setup npm-deps bootstrap announce-rebuild
