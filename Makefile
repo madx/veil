@@ -58,11 +58,16 @@ $(ASSETSDIR)/%: static/% | $(ASSETSDIR)
 	@ mkdir -p $(shell dirname $@)
 	@ cp $< $(shell dirname $@)
 
-# Setup task: install npm packages and bootstrap the directory tree
-setup:
+# Setup task
+setup: npm-deps bootstrap
+
+# Install npm dependencies
+npm-deps:
 	@ echo -e "\e[33m* Installing dependencies\e[0m"
 	@ sudo npm install -g jade stylus autoprefixer-stylus
-	@
+
+# Bootstrap files
+bootstrap:
 	@ test -d sources && { echo -e "\n\e[31mAlready set up\e[0m\n"; exit 1; } || true
 	@ echo -e "\e[33m* Creating directory structure\e[0m"
 	@ mkdir -p sources/{layouts,pages,stylesheets} static
@@ -76,4 +81,4 @@ setup:
 	@ wget https://raw.github.com/madx/veil/master/skel/index.jade -O sources/pages/index.jade
 	@ wget https://raw.github.com/madx/veil/master/skel/stylesheet.styl -O sources/stylesheets/stylesheet.styl
 
-.PHONY: all clean setup
+.PHONY: all clean setup npm-deps bootstrap
