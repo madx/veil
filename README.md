@@ -36,3 +36,15 @@ Run `make` to build the site.
   folder of your output dir, preserving subdirectories (i.e. `static/js/app.js`
   → `output/assets/js/app.js`).
 
+### watch
+
+Provided you have installed either [inotify-tools](inotifytools) (Linux) or
+[fswatch](fswatch) (OS X), you can use the `watch` task to continuously rebuild
+the site as you modify the source files.
+
+``` console
+$ make watch
+```
+
+[inotifytools]: https://github.com/rvoicilas/inotify-tools
+[fswatch]: https://github.com/alandipert/fswatch

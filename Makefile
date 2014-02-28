@@ -1,5 +1,8 @@
 # Veil - Copyright © 2014 François Vaux
 
+# OS version
+UNAME = $(shell uname -s)
+
 # Source files
 PAGES       = $(shell find sources/pages -name *.jade 2>/dev/null)
 LAYOUTS     = $(wildcard sources/layouts/*.jade)
@@ -20,6 +23,15 @@ CSSDIR    = $(ASSETSDIR)/css
 
 # Default task: build everything
 all: html css static
+
+watch:
+	@ echo -e "\e[33m* Watching for changes\e[0m"
+ifeq ($(UNAME),Linux)
+	@inotifywait -qrm sources/ -e CLOSE_WRITE | while read; do make; done
+endif
+ifeq ($(UNAME),Darwin)
+	@fswatch sources/ make
+endif
 
 # Cleanup: remove all output files
 clean:
