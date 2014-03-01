@@ -20,7 +20,7 @@ WATCH = fswatch sources/:static/ "make -s"
 endif
 
 # Source files
-PAGES       = $(shell find sources/pages -name "*.jade" 2>/dev/null)
+PAGES       = $(shell find sources/pages -name "*.jade" -not -name "_*.jade" 2>/dev/null)
 LAYOUTS     = $(wildcard sources/layouts/*.jade)
 STYLESHEETS = $(shell find sources/stylesheets -name "*.styl" -not -name "_*.styl" 2>/dev/null)
 OTHER       = $(shell find static -type f 2>/dev/null)
