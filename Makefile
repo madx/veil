@@ -22,7 +22,7 @@ endif
 # Source files
 PAGES       = $(shell find sources/pages -name "*.jade" 2>/dev/null)
 LAYOUTS     = $(wildcard sources/layouts/*.jade)
-STYLESHEETS = $(shell find sources/stylesheets -name "*.styl" -not -name "*_.styl" 2>/dev/null)
+STYLESHEETS = $(shell find sources/stylesheets -name "*.styl" -not -name "_*.styl" 2>/dev/null)
 OTHER       = $(shell find static -type f 2>/dev/null)
 
 # Output files
@@ -103,10 +103,10 @@ bootstrap:
 	@ mkdir -p sources/{layouts,pages,stylesheets} static
 	@
 	@ $(ECHO) "$(COL_Y)▸ Installing normalize$(ENDC)"
-	@ curl -s https://raw.github.com/skw/normalize.stylus/master/normalize.styl > sources/stylesheets/normalize_.styl
-	@ sed -i "9s/^/\/\//" sources/stylesheets/normalize_.styl
-	@ sed -i "s/\(box-sizing\)(\([^)]\+\))/\1 \2/" sources/stylesheets/normalize_.styl
-	@ $(ECHO) "  sources/stylesheets/normalize_.styl"
+	@ curl -s https://raw.github.com/skw/normalize.stylus/master/normalize.styl > sources/stylesheets/_normalize.styl
+	@ sed -i "9s/^/\/\//" sources/stylesheets/_normalize.styl
+	@ sed -i "s/\(box-sizing\)(\([^)]\+\))/\1 \2/" sources/stylesheets/_normalize.styl
+	@ $(ECHO) "  sources/stylesheets/_normalize.styl"
 	@
 	@ $(ECHO) "$(COL_Y)▸ Bootstraping with default files$(ENDC)"
 	@ curl -s https://raw.github.com/madx/veil/master/skel/default.jade > sources/layouts/default.jade
