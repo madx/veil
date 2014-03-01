@@ -22,7 +22,7 @@ endif
 # Source files
 PAGES       = $(shell find sources/pages -name *.jade 2>/dev/null)
 LAYOUTS     = $(wildcard sources/layouts/*.jade)
-STYLESHEETS = $(filter-out %_.styl,$(wildcard sources/stylesheets/*.styl))
+STYLESHEETS = $(shell find sources/stylesheets -name "*.styl" -not -name "*_.styl" 2>/dev/null)
 OTHER       = $(shell find static -type f 2>/dev/null)
 
 # Output files
@@ -81,7 +81,7 @@ $(OUTDIR)/%.html: sources/pages/%.jade | $(OUTDIR)
 # Rule for stylesheets
 $(CSSDIR)/%.css: sources/stylesheets/%.styl | $(CSSDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
-	@ stylus -u autoprefixer-stylus -o $(CSSDIR) >/dev/null $<
+	@ stylus -u autoprefixer-stylus -o $(shell dirname $@) >/dev/null $<
 
 # Rules for static assets
 $(ASSETSDIR)/%: static/% | $(ASSETSDIR)
