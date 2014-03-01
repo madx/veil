@@ -20,7 +20,7 @@ WATCH = fswatch sources/:static/ "make -s"
 endif
 
 # Source files
-PAGES       = $(shell find sources/pages -name *.jade 2>/dev/null)
+PAGES       = $(shell find sources/pages -name "*.jade" 2>/dev/null)
 LAYOUTS     = $(wildcard sources/layouts/*.jade)
 STYLESHEETS = $(shell find sources/stylesheets -name "*.styl" -not -name "*_.styl" 2>/dev/null)
 OTHER       = $(shell find static -type f 2>/dev/null)
@@ -75,7 +75,6 @@ announce-rebuild:
 # Rule for HTML files
 $(OUTDIR)/%.html: sources/pages/%.jade | $(OUTDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
-	@ mkdir -p $(shell dirname $@)
 	@ jade -P -o $(shell dirname $@) >/dev/null $<
 
 # Rule for stylesheets
