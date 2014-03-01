@@ -37,6 +37,9 @@ OUTDIR    = output
 ASSETSDIR = $(OUTDIR)/assets
 CSSDIR    = $(ASSETSDIR)/css
 
+# Include config.mk if it exists
+-include config.mk
+
 # Default task: build everything
 all: announce-rebuild html css assets
 	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
