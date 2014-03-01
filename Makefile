@@ -26,10 +26,10 @@ STYLESHEETS = $(filter-out %_.styl,$(wildcard sources/stylesheets/*.styl))
 OTHER       = $(shell find static -type f 2>/dev/null)
 
 # Output files
-HTML   = $(addsuffix .html,\
-				 	 $(basename $(PAGES:sources/pages%=output%)))
-CSS    = $(addsuffix .css,\
-           $(basename $(STYLESHEETS:sources/stylesheets%=output/assets/css%)))
+HTML = $(addsuffix .html,\
+         $(basename $(PAGES:sources/pages%=output%)))
+CSS = $(addsuffix .css,\
+        $(basename $(STYLESHEETS:sources/stylesheets%=output/assets/css%)))
 STATIC = $(OTHER:static/%=output/assets/%)
 
 # Output directories
