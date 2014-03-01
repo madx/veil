@@ -1,4 +1,13 @@
 # Veil - Copyright © 2014 François Vaux
+#
+# This Makefile provides the complete Veil build system.
+# You can override all the variables by creating a config.mk file and using the
+# same Makefile syntax.
+
+# -- 1. General variables --
+
+# OS version
+UNAME = $(shell uname -s)
 
 # Colors
 COL_R = "\\033[31m"
@@ -6,41 +15,75 @@ COL_G = "\\033[32m"
 COL_Y = "\\033[33m"
 ENDC  = "\\033[0m"
 
-# OS version
-UNAME = $(shell uname -s)
 
-# OS specific variables
-ifeq ($(UNAME),Linux)
-ECHO = echo -e
-WATCH = inotifywait -qrm sources/ static/ -e CLOSE_WRITE | while read; do make -s; done
-endif
-ifeq ($(UNAME),Darwin)
-ECHO = echo
-WATCH = fswatch sources/:static/ "make -s"
-endif
+# -- 2. Sources and output --
+
+# Extension for source page files
+PAGE_EXT = jade
+
+# Estension for source stylesheets
+STYLE_EXT = styl
 
 # Source files
-PAGES       = $(shell find sources/pages -name "*.jade" -not -name "_*.jade" 2>/dev/null)
-LAYOUTS     = $(wildcard sources/layouts/*.jade)
-STYLESHEETS = $(shell find sources/stylesheets -name "*.styl" -not -name "_*.styl" 2>/dev/null)
+PAGES       = $(shell find sources/pages/ \
+                -name "*.$(PAGE_EXT)" \
+                -not -name "_*.$(PAGE_EXT)" 2>/dev/null)
+STYLESHEETS = $(shell find sources/stylesheets/ \
+                -name "*.styl" \
+                -not -name "_*.styl" 2>/dev/null)
+LAYOUTS     = $(shell find sources/layouts/ \
+                -name "*.$(PAGE_EXT)" 2>/dev/null)
 OTHER       = $(shell find static -type f 2>/dev/null)
-
-# Output files
-HTML = $(addsuffix .html,\
-         $(basename $(PAGES:sources/pages%=output%)))
-CSS = $(addsuffix .css,\
-        $(basename $(STYLESHEETS:sources/stylesheets%=output/assets/css%)))
-STATIC = $(OTHER:static/%=output/assets/%)
 
 # Output directories
 OUTDIR    = output
 ASSETSDIR = $(OUTDIR)/assets
 CSSDIR    = $(ASSETSDIR)/css
 
-# Include config.mk if it exists
+# Output files
+HTML = $(addsuffix .html,\
+         $(basename $(PAGES:sources/pages/%=$(OUTDIR)/%)))
+CSS = $(addsuffix .css,\
+        $(basename $(STYLESHEETS:sources/stylesheets/%=$(CSSDIR)/%)))
+STATIC = $(OTHER:static/%=$(ASSETSDIR)/%)
+
+
+# -- 3. Commands --
+
+# Echo command
+ECHO = echo -e
+
+# Command used by the watch rule
+WATCH = inotifywait -qrm sources/ static/ -e CLOSE_WRITE | while read; do make -s; done
+
+# OS X-specific overrides
+ifeq ($(UNAME),Darwin)
+ECHO = echo
+WATCH = fswatch sources/:static/ "make -s"
+endif
+
+# Commands used by the page-building rule
+define page-cc =
+@ jade -P -o $(shell dirname $@) >/dev/null $<
+endef
+
+# Commands used by the stylesheet-building rule
+define stylesheet-cc =
+@ stylus -u autoprefixer-stylus -o $(shell dirname $@) >/dev/null $<
+endef
+
+# Commands used by the assets-building rule
+define asset-cc =
+@ mkdir -p $(shell dirname $@)
+@ cp $< $(shell dirname $@)
+endef
+
+# Override variables with included config.mk if it exists
 -include config.mk
 
-# Default task: build everything
+# -- 4. Rules and recipes --
+
+# Default rule: build everything
 all: announce-rebuild html css assets
 	@ $(ECHO) "$(COL_G)✓ Done$(ENDC)"
 
@@ -75,18 +118,17 @@ announce-rebuild:
 # Rule for HTML files
 $(OUTDIR)/%.html: sources/pages/%.jade | $(OUTDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
-	@ jade -P -o $(shell dirname $@) >/dev/null $<
+	$(page-cc)
 
 # Rule for stylesheets
 $(CSSDIR)/%.css: sources/stylesheets/%.styl | $(CSSDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
-	@ stylus -u autoprefixer-stylus -o $(shell dirname $@) >/dev/null $<
+	$(stylesheet-cc)
 
 # Rules for static assets
 $(ASSETSDIR)/%: static/% | $(ASSETSDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
-	@ mkdir -p $(shell dirname $@)
-	@ cp $< $(shell dirname $@)
+	$(asset-cc)
 
 # Setup task
 setup: npm-deps bootstrap
