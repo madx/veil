@@ -1,7 +1,7 @@
-veil
+Veil
 ====
 
-veil is a very simple boilerplate for writing static sites.
+Veil is a very simple boilerplate for writing static sites.
 
 It uses [Jade][jade] for templating, [Stylus][stylus] for CSS generation and
 [GNU Make][make] for the build system.
