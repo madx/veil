@@ -65,7 +65,7 @@ You can, for example, change the templating system to another engine:
 
 Read the Makefile to learn what you can customise.
 
-Here's an example `config.mk` for using [Redcarpet](redcarpet) as your
+Here's an example `config.mk` for using [Redcarpet][redcarpet] as your
 templating engine:
 
 ``` make
