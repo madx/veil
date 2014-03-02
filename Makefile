@@ -29,8 +29,8 @@ PAGES       = $(shell find sources/pages/ \
                 -name "*.$(PAGE_EXT)" \
                 -not -name "_*.$(PAGE_EXT)" 2>/dev/null)
 STYLESHEETS = $(shell find sources/stylesheets/ \
-                -name "*.styl" \
-                -not -name "_*.styl" 2>/dev/null)
+                -name "*.$(STYLE_EXT)" \
+                -not -name "_*.$(STYLE_EXT)" 2>/dev/null)
 LAYOUTS     = $(shell find sources/layouts/ \
                 -name "*.$(PAGE_EXT)" 2>/dev/null)
 OTHER       = $(shell find static -type f 2>/dev/null)
@@ -116,12 +116,12 @@ announce-rebuild:
 	@ $(ECHO) "$(COL_Y)▸ Rebuilding$(ENDC)"
 
 # Rule for HTML files
-$(OUTDIR)/%.html: sources/pages/%.jade | $(OUTDIR)
+$(OUTDIR)/%.html: sources/pages/%.$(PAGE_EXT) | $(OUTDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
 	$(page-cc)
 
 # Rule for stylesheets
-$(CSSDIR)/%.css: sources/stylesheets/%.styl | $(CSSDIR)
+$(CSSDIR)/%.css: sources/stylesheets/%.$(STYLE_EXT) | $(CSSDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
 	$(stylesheet-cc)
 
