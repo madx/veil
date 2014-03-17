@@ -54,12 +54,12 @@ STATIC = $(OTHER:static/%=$(ASSETSDIR)/%)
 ECHO = echo -e
 
 # Command used by the watch rule
-WATCH = inotifywait -qrm sources/ static/ -e CLOSE_WRITE | while read; do make -s; done
+WATCH = inotifywait -qrm sources/ static/ -e CLOSE_WRITE | while read; do make -s all; done
 
 # OS X-specific overrides
 ifeq ($(UNAME),Darwin)
 ECHO = echo
-WATCH = fswatch sources/:static/ "make -s"
+WATCH = fswatch sources/:static/ "make -s all"
 endif
 
 # Commands used by the page-building rule
