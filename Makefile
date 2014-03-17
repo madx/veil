@@ -116,7 +116,7 @@ announce-rebuild:
 	@ $(ECHO) "$(COL_Y)▸ Rebuilding$(ENDC)"
 
 # Rule for HTML files
-$(OUTDIR)/%.html: sources/pages/%.$(PAGE_EXT) | $(OUTDIR)
+$(OUTDIR)/%.html: sources/pages/%.$(PAGE_EXT) $(LAYOUTS) | $(OUTDIR)
 	@ $(ECHO) "  $(@:$(OUTDIR)/%=%)"
 	$(page-cc)
 
