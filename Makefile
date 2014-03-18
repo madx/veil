@@ -81,7 +81,10 @@ endef
 # Override variables with included config.mk if it exists
 -include config.mk
 
+
 # -- 4. Rules and recipes --
+
+.DEFAULT_GOAL := # Reset default goal
 
 # Default rule: build everything
 all: announce-rebuild html css assets
