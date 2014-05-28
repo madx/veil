@@ -14,7 +14,7 @@ Install
 $ mkdir my-website; cd my-website
 
 # Download the Makefile
-$ curl -s https://raw.github.com/madx/veil/master/Makefile -o Makefile
+$ curl -sL https://raw.githubusercontent.com/madx/veil/master/Makefile -o Makefile
 
 # Launch the setup task
 $ make setup
