@@ -36,7 +36,7 @@ LAYOUTS     = $(shell find sources/layouts/ \
 OTHER       = $(shell find static -type f 2>/dev/null)
 
 # Output directories
-OUTDIR    = output
+OUTDIR    = build
 ASSETSDIR = $(OUTDIR)/assets
 CSSDIR    = $(ASSETSDIR)/css
 
