@@ -6,6 +6,9 @@
 
 # -- 1. General variables --
 
+# Veil version
+VEIL_VERSION = 0.9.0
+
 # OS version
 UNAME = $(shell uname -s)
 
