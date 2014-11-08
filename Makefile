@@ -41,10 +41,8 @@ ASSETSDIR = $(OUTDIR)/assets
 CSSDIR    = $(ASSETSDIR)/css
 
 # Output files
-HTML = $(addsuffix .html,\
-         $(basename $(PAGES:sources/pages/%=$(OUTDIR)/%)))
-CSS = $(addsuffix .css,\
-        $(basename $(STYLESHEETS:sources/stylesheets/%=$(CSSDIR)/%)))
+HTML = $(PAGES:sources/pages/%.$(PAGE_EXT)=$(OUTDIR)/%.html)
+CSS = $(STYLESHEETS:sources/stylesheets/%.$(STYLE_EXT)=$(CSSDIR)/%.css)
 STATIC = $(OTHER:static/%=$(ASSETSDIR)/%)
 
 
